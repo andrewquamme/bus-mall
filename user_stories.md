@@ -5,7 +5,7 @@ User Stories
 As a user...
 -----
 - I want an easy to use interface so the survey is easy to complete
-- I want to see alt-text because I am hard of seeing
+- I want to see alt-text on images because I am hard of seeing
 
 
 As a market researcher...
