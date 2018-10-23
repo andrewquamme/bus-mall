@@ -2,15 +2,13 @@
 
 // Create array to store objects
 var allItems = [];
-var displayedNow = [];
+var current = [];
+var previous = [];
 // Get <img> elements from DOM
-var itemOne = document.getElementById('item-one');
-var itemTwo = document.getElementById('item-two');
-var itemThree = document.getElementById('item-three');
-var itemLocations = [];
-itemLocations[0] = itemOne;
-itemLocations[1] = itemTwo;
-itemLocations[2] = itemThree;
+var htmlLoc = [];
+htmlLoc[0] = document.getElementById('item-one');
+htmlLoc[1] = document.getElementById('item-two');
+htmlLoc[2] = document.getElementById('item-three');
 
 // Object constructor
 function CatalogItem (name, filepath) {
@@ -43,23 +41,43 @@ new CatalogItem('usb', 'img/usb.gif');
 new CatalogItem('water-can', 'img/water-can.jpg');
 new CatalogItem('wine-glass', 'img/wine-glass.jpg');
 
-function getRandomItem() {
-  var idx = Math.floor(Math.random() * allItems.length);
-  return allItems[idx];
+function randomNum() {
+  return Math.floor(Math.random() * allItems.length);
 }
 
-function checkDuplicate() {
+function getRandoms () {
 
+  current = [];
+
+  current.push(randomNum());
+  while (previous.includes(current[0])) {
+    current[0] = randomNum();
+  }
+
+  current.push(randomNum());
+  while (current[0] === current[1] || previous.includes(current[1])) {
+    current[1] = (randomNum());
+  }
+
+  current.push(randomNum());
+  while (current[0] === current[2] || current[1] === current[2] || previous.includes(current[2])) {
+    current[2] = (randomNum());
+  }
+
+  previous = current;
+
+  displayItems();
 }
 
 function displayItems() {
-  for (var i = 0; i < itemLocations.length; i ++) {
-    var item = getRandomItem();
-    itemLocations[i].src = item.filepath;
-    itemLocations[i].title = item.name;
-    itemLocations[i].alt = item.name;
+  for (var i = 0; i < current.length; i ++) {
+    var idx = current[i];
+    htmlLoc[i].src = allItems[idx].filepath;
+    htmlLoc[i].title = allItems[idx].name;
+    htmlLoc[i].alt = allItems[idx].name;
+    allItems[idx].views++;
   }
+  console.log(allItems);
 }
 
-console.table(allItems);
-displayItems();
+getRandoms();
