@@ -1,20 +1,22 @@
 'use strict';
 
-// Create array to store objects
-var allItems = [];
-var current = [];
-var previous = [];
-var displayCounter = 1;
-// Get <img> elements from DOM
-var htmlLoc = [];
-var itemOne = document.getElementById('item-one');
-var itemTwo = document.getElementById('item-two');
-var itemThree = document.getElementById('item-three');
-htmlLoc[0] = itemOne;
-htmlLoc[1] = itemTwo;
-htmlLoc[2] = itemThree;
+// *********************
+// GLOBALS
 
-// Object constructor
+var allItems = [];
+var displayedItems = [];
+var voteCounter = 1;
+
+// var itemContainer = document.getElementById('item-container');
+var left = document.getElementById('item-one');
+var center = document.getElementById('item-two');
+var right = document.getElementById('item-three');
+// var itemList = document.getElementById('item-list');
+
+// *********************
+// OBJECTS
+// *********************
+
 function CatalogItem (name, filepath) {
   this.name = name;
   this.filepath = filepath;
@@ -23,7 +25,6 @@ function CatalogItem (name, filepath) {
   allItems.push(this);
 }
 
-// Make instances of items
 new CatalogItem('bag', 'img/bag.jpg');
 new CatalogItem('banana', 'img/banana.jpg');
 new CatalogItem('bathroom', 'img/bathroom.jpg');
@@ -45,35 +46,44 @@ new CatalogItem('usb', 'img/usb.gif');
 new CatalogItem('water-can', 'img/water-can.jpg');
 new CatalogItem('wine-glass', 'img/wine-glass.jpg');
 
+// *********************
+// FUNCTIONS
+// *********************
+
 function randomNum() {
   return Math.floor(Math.random() * allItems.length);
 }
 
-function getRandoms () {
-  // Clear current array
-  current = [];
+function getThreeUniques () {
+  // Clear blank  array for uniique numbers
+  var output = [];
   // Push first random number and check if it's in previous array
-  current.push(randomNum());
-  while (previous.includes(current[0])) {
-    current[0] = randomNum();
+  output.push(randomNum());
+  while (displayedItems.includes(output[0])) {
+    output[0] = randomNum();
   }
   // Push second random, check against the first and previous array
-  current.push(randomNum());
-  while (current[0] === current[1] || previous.includes(current[1])) {
-    current[1] = (randomNum());
+  output.push(randomNum());
+  while (output[0] === output[1] || displayedItems.includes(output[1])) {
+    output[1] = (randomNum());
   }
   // Push third random, check against first, second, and previous array
-  current.push(randomNum());
-  while (current[0] === current[2] || current[1] === current[2] || previous.includes(current[2])) {
-    current[2] = (randomNum());
+  output.push(randomNum());
+  while (output[0] === output[2] || output[1] === output[2] || displayedItems.includes(output[2])) {
+    output[2] = (randomNum());
   }
-  // All 3 are unique, set previous to current
-  previous = current;
-  // Display current items
-  displayItems();
+
+  return output;
 }
 
 function displayItems() {
+  var current = getThreeUniques();
+
+  var htmlLoc = [];
+  htmlLoc[0] = left;
+  htmlLoc[1] = center;
+  htmlLoc[2] = right;
+
   for (var i = 0; i < current.length; i ++) {
     var idx = current[i];
     htmlLoc[i].src = allItems[idx].filepath;
@@ -81,33 +91,40 @@ function displayItems() {
     htmlLoc[i].alt = allItems[idx].name;
     allItems[idx].views++;
   }
+  displayedItems = current;
 }
 
 function handleItemClick (event) {
-  if (displayCounter < 25) {
+  console.log(event.target.id);
+  if (voteCounter < 25) {
     switch (event.target.id) {
     case 'item-one':
       console.log('item 1 click');
-      allItems[current[0]].clicks++;
+      allItems[displayedItems[0]].clicks++;
       break;
     case 'item-two':
       console.log('item 2 click');
-      allItems[current[1]].clicks++;
+      allItems[displayedItems[1]].clicks++;
       break;
     case 'item-three':
       console.log('item 3 click');
-      allItems[current[2]].clicks++;
+      allItems[displayedItems[2]].clicks++;
     }
-    displayCounter++;
-    getRandoms();
+    voteCounter++;
+    displayItems();
   } else {
     alert('Thank you!') ;
     console.table(allItems);
   }
 }
 
-getRandoms();
+// *********************
+// RUN ON PAGE LOAD
+// *********************
 
-itemOne.addEventListener('click', handleItemClick);
-itemTwo.addEventListener('click', handleItemClick);
-itemThree.addEventListener('click', handleItemClick);
+displayItems();
+
+// itemContainer.addEventListener('click', handleItemClick);
+left.addEventListener('click', handleItemClick);
+center.addEventListener('click', handleItemClick);
+right.addEventListener('click', handleItemClick);
