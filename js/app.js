@@ -1,8 +1,8 @@
 'use strict';
 
-// *********************
+// +++++++++++++++++++++++++++++++++
 // GLOBALS
-// *********************
+// +++++++++++++++++++++++++++++++++
 
 var allItems = [];
 var displayedItems = [];
@@ -14,9 +14,9 @@ var center = document.getElementById('center-item');
 var right = document.getElementById('right-item');
 var itemList = document.getElementById('item-list');
 
-// *********************
+// +++++++++++++++++++++++++++++++++
 // OBJECTS
-// *********************
+// +++++++++++++++++++++++++++++++++
 
 function CatalogItem (name) {
   this.name = name;
@@ -32,9 +32,9 @@ for (var i = 0; i < itemNames.length; i ++ ) {
   new CatalogItem(itemNames[i]);
 }
 
-// *********************
+// +++++++++++++++++++++++++++++++++
 // FUNCTIONS
-// *********************
+// +++++++++++++++++++++++++++++++++
 
 function randomNum() {
   return Math.floor(Math.random() * allItems.length);
@@ -58,7 +58,6 @@ function getThreeUniques () {
   while (output[0] === output[2] || output[1] === output[2] || displayedItems.includes(output[2])) {
     output[2] = (randomNum());
   }
-  console.log(output);
   return output;
 }
 
@@ -106,9 +105,9 @@ function showList() {
   }
 }
 
-// *********************
+// +++++++++++++++++++++++++++++++++
 // RUN ON PAGE LOAD
-// *********************
+// +++++++++++++++++++++++++++++++++
 
 displayItems();
 
