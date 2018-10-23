@@ -1,76 +1,71 @@
 'use strict';
 
-// Create array to store objects
-var allItems = [];
-var current = [];
-var previous = [];
-var clicks = 0;
-// Get <img> elements from DOM
-var htmlLoc = [];
-htmlLoc[0] = document.getElementById('item-one');
-htmlLoc[1] = document.getElementById('item-two');
-htmlLoc[2] = document.getElementById('item-three');
+// +++++++++++++++++++++++++++++++++
+// GLOBALS
+// +++++++++++++++++++++++++++++++++
 
-// Object constructor
-function CatalogItem (name, filepath) {
+var allItems = [];
+var displayedItems = [];
+var totalVotes = 0;
+
+var itemContainer = document.getElementById('item-container');
+var left = document.getElementById('left-item');
+var center = document.getElementById('center-item');
+var right = document.getElementById('right-item');
+var itemList = document.getElementById('item-list');
+
+// +++++++++++++++++++++++++++++++++
+// OBJECTS
+// +++++++++++++++++++++++++++++++++
+
+function CatalogItem (name) {
   this.name = name;
-  this.filepath = filepath;
+  this.filepath = `img/${name}.jpg`;
   this.views = 0;
   this.clicks = 0;
   allItems.push(this);
 }
 
-// Make instances of items
-new CatalogItem('bag', 'img/bag.jpg');
-new CatalogItem('banana', 'img/banana.jpg');
-new CatalogItem('bathroom', 'img/bathroom.jpg');
-new CatalogItem('boots', 'img/boots.jpg');
-new CatalogItem('breakfast', 'img/breakfast.jpg');
-new CatalogItem('bubblegum', 'img/bubblegum.jpg');
-new CatalogItem('chair', 'img/chair.jpg');
-new CatalogItem('cthulhu', 'img/cthulhu.jpg');
-new CatalogItem('dog-duck', 'img/dog-duck.jpg');
-new CatalogItem('dragon', 'img/dragon.jpg');
-new CatalogItem('pen', 'img/pen.jpg');
-new CatalogItem('pet-sweep', 'img/pet-sweep.jpg');
-new CatalogItem('scissors', 'img/scissors.jpg');
-new CatalogItem('shark', 'img/shark.jpg');
-new CatalogItem('sweep', 'img/sweep.png');
-new CatalogItem('tauntaun', 'img/tauntaun.jpg');
-new CatalogItem('unicorn', 'img/unicorn.jpg');
-new CatalogItem('usb', 'img/usb.gif');
-new CatalogItem('water-can', 'img/water-can.jpg');
-new CatalogItem('wine-glass', 'img/wine-glass.jpg');
+var itemNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
+
+for (var i = 0; i < itemNames.length; i ++ ) {
+  new CatalogItem(itemNames[i]);
+}
+
+// +++++++++++++++++++++++++++++++++
+// FUNCTIONS
+// +++++++++++++++++++++++++++++++++
 
 function randomNum() {
   return Math.floor(Math.random() * allItems.length);
 }
 
-function getRandoms () {
-
-  current = [];
-
-  current.push(randomNum());
-  while (previous.includes(current[0])) {
-    current[0] = randomNum();
+function getThreeUniques () {
+  // Clear blank  array for uniique numbers
+  var output = [];
+  // Push first random number and check if it's in previous array
+  output.push(randomNum());
+  while (displayedItems.includes(output[0])) {
+    output[0] = randomNum();
   }
-
-  current.push(randomNum());
-  while (current[0] === current[1] || previous.includes(current[1])) {
-    current[1] = (randomNum());
+  // Push second random, check against the first and previous array
+  output.push(randomNum());
+  while (output[0] === output[1] || displayedItems.includes(output[1])) {
+    output[1] = (randomNum());
   }
-
-  current.push(randomNum());
-  while (current[0] === current[2] || current[1] === current[2] || previous.includes(current[2])) {
-    current[2] = (randomNum());
+  // Push third random, check against first, second, and previous array
+  output.push(randomNum());
+  while (output[0] === output[2] || output[1] === output[2] || displayedItems.includes(output[2])) {
+    output[2] = (randomNum());
   }
-
-  previous = current;
-
-  displayItems();
+  return output;
 }
 
 function displayItems() {
+  var current = getThreeUniques();
+
+  var htmlLoc = [left, center, right];
+
   for (var i = 0; i < current.length; i ++) {
     var idx = current[i];
     htmlLoc[i].src = allItems[idx].filepath;
@@ -78,14 +73,42 @@ function displayItems() {
     htmlLoc[i].alt = allItems[idx].name;
     allItems[idx].views++;
   }
-  console.log(allItems);
+  displayedItems = current;
 }
 
-// function clickHandler () {
-//   while (clicks < 25) {
+function handleItemClick (event) {
+  if (event.target.id === 'item-container') {
+    alert('Please click directly on an item')
+    return;
+  }
+  for (var i = 0; i < allItems.length; i++){
+    if (event.target.alt === allItems[i].name) {
+      allItems[i].clicks++;
+    }
+  }
+  totalVotes++;
+  if (totalVotes === 25) {
+    itemContainer.removeEventListener('click', handleItemClick);
+    alert('Thank you for your input!') ;
+    console.table(allItems);
+    itemContainer.textContent = '';
+    return showList();
+  }
+  displayItems();
+}
 
-//   }
-// }
+function showList() {
+  for (var i = 0; i < allItems.length; i ++) {
+    var liEl = document.createElement('li');
+    liEl.textContent = `${allItems[i].name} has ${allItems[i].views} views and ${allItems[i].clicks} votes`;
+    itemList.appendChild(liEl);
+  }
+}
 
+// +++++++++++++++++++++++++++++++++
+// RUN ON PAGE LOAD
+// +++++++++++++++++++++++++++++++++
 
-getRandoms();
+displayItems();
+
+itemContainer.addEventListener('click', handleItemClick);
