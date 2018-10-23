@@ -47,26 +47,26 @@ function randomNum() {
 }
 
 function getRandoms () {
-
+  // Clear current array
   current = [];
-
+  // Push first random number and check if it's in previous array
   current.push(randomNum());
   while (previous.includes(current[0])) {
     current[0] = randomNum();
   }
-
+  // Push second random, check against the first and previous array
   current.push(randomNum());
   while (current[0] === current[1] || previous.includes(current[1])) {
     current[1] = (randomNum());
   }
-
+  // Push third random, check against first, second, and previous array
   current.push(randomNum());
   while (current[0] === current[2] || current[1] === current[2] || previous.includes(current[2])) {
     current[2] = (randomNum());
   }
-
+  // All 3 are unique, set previous to current
   previous = current;
-
+  // Display current items
   displayItems();
 }
 
@@ -86,6 +86,5 @@ function displayItems() {
 
 //   }
 // }
-
 
 getRandoms();
