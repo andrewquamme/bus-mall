@@ -4,6 +4,7 @@
 var allItems = [];
 var current = [];
 var previous = [];
+var clicks = 0;
 // Get <img> elements from DOM
 var htmlLoc = [];
 htmlLoc[0] = document.getElementById('item-one');
@@ -79,5 +80,12 @@ function displayItems() {
   }
   console.log(allItems);
 }
+
+// function clickHandler () {
+//   while (clicks < 25) {
+
+//   }
+// }
+
 
 getRandoms();
