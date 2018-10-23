@@ -13,6 +13,7 @@ var left = document.getElementById('left-item');
 var center = document.getElementById('center-item');
 var right = document.getElementById('right-item');
 var itemList = document.getElementById('item-list');
+var ctx = document.getElementById('chart').getContext('2d');
 
 // +++++++++++++++++++++++++++++++++
 // OBJECTS
@@ -41,23 +42,26 @@ function randomNum() {
 }
 
 function getThreeUniques () {
-  // Clear blank  array for uniique numbers
   var output = [];
-  // Push first random number and check if it's in previous array
-  output.push(randomNum());
-  while (displayedItems.includes(output[0])) {
-    output[0] = randomNum();
+
+  var firstNum = randomNum();
+  while (displayedItems.includes(firstNum)) {
+    firstNum = randomNum();
   }
-  // Push second random, check against the first and previous array
-  output.push(randomNum());
-  while (output[0] === output[1] || displayedItems.includes(output[1])) {
-    output[1] = (randomNum());
+  output.push(firstNum);
+
+  var secondNum = randomNum();
+  while (output.includes(secondNum) || displayedItems.includes(secondNum)) {
+    secondNum = (randomNum());
   }
-  // Push third random, check against first, second, and previous array
-  output.push(randomNum());
-  while (output[0] === output[2] || output[1] === output[2] || displayedItems.includes(output[2])) {
-    output[2] = (randomNum());
+  output.push(secondNum);
+
+  var thirdNum = randomNum();
+  while (output.includes(thirdNum) || displayedItems.includes(thirdNum)) {
+    thirdNum = (randomNum());
   }
+  output.push(thirdNum);
+  console.log(output);
   return output;
 }
 
@@ -81,20 +85,33 @@ function handleItemClick (event) {
     alert('Please click directly on an item')
     return;
   }
+
   for (var i = 0; i < allItems.length; i++){
     if (event.target.alt === allItems[i].name) {
       allItems[i].clicks++;
     }
   }
   totalVotes++;
+
   if (totalVotes === 25) {
-    itemContainer.removeEventListener('click', handleItemClick);
-    alert('Thank you for your input!') ;
-    console.table(allItems);
-    itemContainer.textContent = '';
+    disableAndHideImages();
+
+    // var votes = 0;
+    // for (i = 0; i < allItems.length; i++) {
+    //   votes += allItems[i].clicks;
+    // }
+    // console.log(votes);
+
     return showList();
   }
   displayItems();
+}
+
+function disableAndHideImages() {
+  itemContainer.removeEventListener('click', handleItemClick);
+  alert('Thank you for your input!') ;
+  console.table(allItems);
+  itemContainer.textContent = '';
 }
 
 function showList() {
