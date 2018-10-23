@@ -6,13 +6,13 @@
 
 var allItems = [];
 var displayedItems = [];
-var voteCounter = 1;
+var totalVotes = 0;
 
-// var itemContainer = document.getElementById('item-container');
-var left = document.getElementById('item-one');
-var center = document.getElementById('item-two');
-var right = document.getElementById('item-three');
-// var itemList = document.getElementById('item-list');
+var itemContainer = document.getElementById('item-container');
+var left = document.getElementById('left-item');
+var center = document.getElementById('center-item');
+var right = document.getElementById('right-item');
+var itemList = document.getElementById('item-list');
 
 // *********************
 // OBJECTS
@@ -58,17 +58,14 @@ function getThreeUniques () {
   while (output[0] === output[2] || output[1] === output[2] || displayedItems.includes(output[2])) {
     output[2] = (randomNum());
   }
-
+  console.log(output);
   return output;
 }
 
 function displayItems() {
   var current = getThreeUniques();
 
-  var htmlLoc = [];
-  htmlLoc[0] = left;
-  htmlLoc[1] = center;
-  htmlLoc[2] = right;
+  var htmlLoc = [left, center, right];
 
   for (var i = 0; i < current.length; i ++) {
     var idx = current[i];
@@ -81,26 +78,31 @@ function displayItems() {
 }
 
 function handleItemClick (event) {
-  console.log(event.target.id);
-  if (voteCounter < 25) {
-    switch (event.target.id) {
-    case 'item-one':
-      console.log('item 1 click');
-      allItems[displayedItems[0]].clicks++;
-      break;
-    case 'item-two':
-      console.log('item 2 click');
-      allItems[displayedItems[1]].clicks++;
-      break;
-    case 'item-three':
-      console.log('item 3 click');
-      allItems[displayedItems[2]].clicks++;
+  if (event.target.id === 'item-container') {
+    alert('Please click directly on an item')
+    return;
+  }
+  for (var i = 0; i < allItems.length; i++){
+    if (event.target.alt === allItems[i].name) {
+      allItems[i].clicks++;
     }
-    voteCounter++;
-    displayItems();
-  } else {
-    alert('Thank you!') ;
+  }
+  totalVotes++;
+  if (totalVotes === 25) {
+    itemContainer.removeEventListener('click', handleItemClick);
+    alert('Thank you for your input!') ;
     console.table(allItems);
+    itemContainer.textContent = '';
+    return showList();
+  }
+  displayItems();
+}
+
+function showList() {
+  for (var i = 0; i < allItems.length; i ++) {
+    var liEl = document.createElement('li');
+    liEl.textContent = `${allItems[i].name} has ${allItems[i].views} views and ${allItems[i].clicks} votes`;
+    itemList.appendChild(liEl);
   }
 }
 
@@ -110,7 +112,4 @@ function handleItemClick (event) {
 
 displayItems();
 
-// itemContainer.addEventListener('click', handleItemClick);
-left.addEventListener('click', handleItemClick);
-center.addEventListener('click', handleItemClick);
-right.addEventListener('click', handleItemClick);
+itemContainer.addEventListener('click', handleItemClick);
