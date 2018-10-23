@@ -4,12 +4,15 @@
 var allItems = [];
 var current = [];
 var previous = [];
-var clicks = 0;
+var displayCounter = 1;
 // Get <img> elements from DOM
 var htmlLoc = [];
-htmlLoc[0] = document.getElementById('item-one');
-htmlLoc[1] = document.getElementById('item-two');
-htmlLoc[2] = document.getElementById('item-three');
+var itemOne = document.getElementById('item-one');
+var itemTwo = document.getElementById('item-two');
+var itemThree = document.getElementById('item-three');
+htmlLoc[0] = itemOne;
+htmlLoc[1] = itemTwo;
+htmlLoc[2] = itemThree;
 
 // Object constructor
 function CatalogItem (name, filepath) {
@@ -78,13 +81,33 @@ function displayItems() {
     htmlLoc[i].alt = allItems[idx].name;
     allItems[idx].views++;
   }
-  console.log(allItems);
 }
 
-// function clickHandler () {
-//   while (clicks < 25) {
-
-//   }
-// }
+function handleItemClick (event) {
+  if (displayCounter < 25) {
+    switch (event.target.id) {
+    case 'item-one':
+      console.log('item 1 click');
+      allItems[current[0]].clicks++;
+      break;
+    case 'item-two':
+      console.log('item 2 click');
+      allItems[current[1]].clicks++;
+      break;
+    case 'item-three':
+      console.log('item 3 click');
+      allItems[current[2]].clicks++;
+    }
+    displayCounter++;
+    getRandoms();
+  } else {
+    alert('Thank you!') ;
+    console.table(allItems);
+  }
+}
 
 getRandoms();
+
+itemOne.addEventListener('click', handleItemClick);
+itemTwo.addEventListener('click', handleItemClick);
+itemThree.addEventListener('click', handleItemClick);
