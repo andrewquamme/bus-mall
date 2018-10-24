@@ -81,14 +81,14 @@ function displayItems() {
   displayedItems = current;
 }
 
-function handleItemClick (event) {
-  if (event.target.id === 'item-container') {
+function handleItemClick (e) {
+  if (e.target.id === 'item-container') {
     alert('Please click directly on an item')
     return;
   }
 
   for (var i = 0; i < allItems.length; i++){
-    if (event.target.alt === allItems[i].name) {
+    if (e.target.alt === allItems[i].name) {
       allItems[i].votes++;
     }
   }
@@ -170,7 +170,7 @@ function makeChartArrays() {
 
 function main() {
 
-  if (localStorage.busMallItems === undefined) {
+  if (!localStorage.busMallItems) {
     createObjectInstances();
   } else {
     createRetrievedObjects(JSON.parse(localStorage.busMallItems));
