@@ -22,23 +22,25 @@ var chartViews = [];
 // OBJECTS
 // +++++++++++++++++++++++++++++++++
 
-function CatalogItem (name) {
+function CatalogItem (name, views, votes) {
   this.name = name;
   this.filepath = `img/${name}.jpg`;
-  this.views = 0;
-  this.clicks = 0;
+  this.views = views;
+  this.clicks = votes;
   allItems.push(this);
-}
-
-var itemNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
-
-for (var i = 0; i < itemNames.length; i ++ ) {
-  new CatalogItem(itemNames[i]);
 }
 
 // +++++++++++++++++++++++++++++++++
 // FUNCTIONS
 // +++++++++++++++++++++++++++++++++
+
+function createItems() {
+  var itemNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
+
+  for (var i = 0; i < itemNames.length; i ++ ) {
+    new CatalogItem(itemNames[i], 0, 0);
+  }
+}
 
 function randomNum() {
   return Math.floor(Math.random() * allItems.length);
@@ -163,6 +165,7 @@ function makeChartArrays() {
 // RUN ON PAGE LOAD
 // +++++++++++++++++++++++++++++++++
 
+createItems();
 displayItems();
 
 itemContainer.addEventListener('click', handleItemClick);
