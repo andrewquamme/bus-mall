@@ -47,23 +47,13 @@ function randomNum() {
 function getThreeUniques () {
   var output = [];
 
-  var firstNum = randomNum();
-  while (displayedItems.includes(firstNum)) {
-    firstNum = randomNum();
+  for (var i = 0; i < 3; i++) {
+    var number = randomNum();
+    while (output.includes(number) || displayedItems.includes(number)) {
+      number = (randomNum());
+    }
+    output.push(number);
   }
-  output.push(firstNum);
-
-  var secondNum = randomNum();
-  while (output.includes(secondNum) || displayedItems.includes(secondNum)) {
-    secondNum = (randomNum());
-  }
-  output.push(secondNum);
-
-  var thirdNum = randomNum();
-  while (output.includes(thirdNum) || displayedItems.includes(thirdNum)) {
-    thirdNum = (randomNum());
-  }
-  output.push(thirdNum);
 
   return output;
 }
