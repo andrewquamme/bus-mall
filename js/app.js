@@ -117,27 +117,15 @@ function showChart() {
     datasets: [{
       label: 'Votes',
       data: chartVotes, // votes array declared earlier
-      backgroundColor: [
-        'rgba(255, 0, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(255, 255, 0, 0.2)', 'rgba(0, 255, 0, 0.2)', 'rgba(0, 0, 255, 0.2)',
-        'rgba(255, 0, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(255, 255, 0, 0.2)', 'rgba(0, 255, 0, 0.2)', 'rgba(0, 0, 255, 0.2)',
-        'rgba(255, 0, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(255, 255, 0, 0.2)', 'rgba(0, 255, 0, 0.2)', 'rgba(0, 0, 255, 0.2)',
-        'rgba(255, 0, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(255, 255, 0, 0.2)', 'rgba(0, 255, 0, 0.2)', 'rgba(0, 0, 255, 0.2)',
-        'rgba(255, 0, 0, 0.2)', 'rgba(255, 165, 0, 0.2)', 'rgba(255, 255, 0, 0.2)', 'rgba(0, 255, 0, 0.2)', 'rgba(0, 0, 255, 0.2)'],
+      backgroundColor: 'rgba(255, 0, 0, 0.2)',
       borderWidth: 1,
-      borderColor: [
-        'red', 'orange', 'yellow', 'green', 'blue',
-        'red', 'orange', 'yellow', 'green', 'blue',
-        'red', 'orange', 'yellow', 'green', 'blue',
-        'red', 'orange', 'yellow', 'green', 'blue',
-        'red', 'orange', 'yellow', 'green', 'blue',]
+      borderColor: 'red',
     },{
       label: 'Views',
       data: chartViews, // views array declared earlier
-      backgroundColor: [
-        'rgba(0, 0, 255, 0.2)'],
+      backgroundColor: 'rgba(0, 0, 255, 0.2)',
       borderWidth: 1,
-      borderColor: [
-        'blue']
+      borderColor: 'blue',
     }]
   }
 
