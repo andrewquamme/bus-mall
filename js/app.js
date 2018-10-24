@@ -42,7 +42,8 @@ function createObjectInstances() {
   }
 }
 
-function createRetrievedObjects (retrievedItems) {
+function createRetrievedObjects () {
+  var retrievedItems = JSON.parse(localStorage.busMallItems);
   for (var i = 0; i < retrievedItems.length; i++) {
     new CatalogItem(retrievedItems[i].name, retrievedItems[i].views, retrievedItems[i].votes);
   }
@@ -154,7 +155,7 @@ function showChart() {
   }
 
   var myChart = new Chart(ctx, {
-    type: 'horizontalBar',
+    type: 'bar',
     data: data,
     options: options,
   });
@@ -170,10 +171,10 @@ function makeChartArrays() {
 
 function main() {
 
-  if (!localStorage.busMallItems) {
-    createObjectInstances();
+  if (localStorage.busMallItems) {
+    createRetrievedObjects();
   } else {
-    createRetrievedObjects(JSON.parse(localStorage.busMallItems));
+    createObjectInstances();
   }
 
   displayItems();
