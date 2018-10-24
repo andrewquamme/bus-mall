@@ -83,7 +83,7 @@ function displayItems() {
 
 function handleItemClick (e) {
   if (e.target.id === 'item-container') {
-    alert('Please click directly on an item')
+    alert('Please click directly on an item');
     return;
   }
 
