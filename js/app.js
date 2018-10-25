@@ -26,7 +26,7 @@ function CatalogItem (name, views, votes) {
   this.name = name;
   this.filepath = `img/${name}.jpg`;
   this.views = views;
-  this.clicks = votes;
+  this.votes = votes;
   allItems.push(this);
 }
 
@@ -34,11 +34,18 @@ function CatalogItem (name, views, votes) {
 // FUNCTIONS
 // +++++++++++++++++++++++++++++++++
 
-function createItems() {
+function createObjectInstances() {
   var itemNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 
   for (var i = 0; i < itemNames.length; i ++ ) {
     new CatalogItem(itemNames[i], 0, 0);
+  }
+}
+
+function createRetrievedObjects () {
+  var retrievedItems = JSON.parse(localStorage.busMallItems);
+  for (var i = 0; i < retrievedItems.length; i++) {
+    new CatalogItem(retrievedItems[i].name, retrievedItems[i].views, retrievedItems[i].votes);
   }
 }
 
@@ -75,20 +82,22 @@ function displayItems() {
   displayedItems = current;
 }
 
-function handleItemClick (event) {
-  if (event.target.id === 'item-container') {
-    alert('Please click directly on an item')
+function handleItemClick (e) {
+  if (e.target.id === 'item-container') {
+    alert('Please click directly on an item');
     return;
   }
 
   for (var i = 0; i < allItems.length; i++){
-    if (event.target.alt === allItems[i].name) {
-      allItems[i].clicks++;
+    if (e.target.alt === allItems[i].name) {
+      allItems[i].votes++;
     }
   }
   totalVotes++;
 
   if (totalVotes === 25) {
+    disableAndHideImages();
+    localStorage.setItem('busMallItems', JSON.stringify(allItems));
     return showChart();
   }
   displayItems();
@@ -104,13 +113,12 @@ function disableAndHideImages() {
 // function showList() {
 //   for (var i = 0; i < allItems.length; i ++) {
 //     var liEl = document.createElement('li');
-//     liEl.textContent = `${allItems[i].name} has ${allItems[i].views} views and ${allItems[i].clicks} votes`;
+//     liEl.textContent = `${allItems[i].name} has ${allItems[i].views} views and ${allItems[i].votes} votes`;
 //     itemList.appendChild(liEl);
 //   }
 // }
 
 function showChart() {
-  disableAndHideImages();
   makeChartArrays();
   var ctx = document.getElementById('chart').getContext('2d');
 
@@ -147,7 +155,7 @@ function showChart() {
   }
 
   var myChart = new Chart(ctx, {
-    type: 'horizontalBar',
+    type: 'bar',
     data: data,
     options: options,
   });
@@ -156,16 +164,25 @@ function showChart() {
 function makeChartArrays() {
   for (var i = 0; i < allItems.length; i ++) {
     chartLabels.push(allItems[i].name);
-    chartVotes.push(allItems[i].clicks);
+    chartVotes.push(allItems[i].votes);
     chartViews.push(allItems[i].views);
   }
+}
+
+function main() {
+
+  if (localStorage.busMallItems) {
+    createRetrievedObjects();
+  } else {
+    createObjectInstances();
+  }
+
+  displayItems();
+  itemContainer.addEventListener('click', handleItemClick);
 }
 
 // +++++++++++++++++++++++++++++++++
 // RUN ON PAGE LOAD
 // +++++++++++++++++++++++++++++++++
 
-createItems();
-displayItems();
-
-itemContainer.addEventListener('click', handleItemClick);
+main();
