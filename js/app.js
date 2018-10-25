@@ -35,7 +35,10 @@ function CatalogItem (name, views, votes) {
 // +++++++++++++++++++++++++++++++++
 
 function createObjectInstances() {
-  var itemNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
+  var itemNames = ['bag', 'banana', 'bathroom', 'boots', 'breakfast',
+    'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon',
+    'pen', 'pet-sweep', 'scissors', 'shark', 'sweep',
+    'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 
   for (var i = 0; i < itemNames.length; i ++ ) {
     new CatalogItem(itemNames[i], 0, 0);
