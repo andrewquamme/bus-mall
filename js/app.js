@@ -47,6 +47,7 @@ function createObjectInstances() {
 
 function createRetrievedObjects () {
   var retrievedItems = JSON.parse(localStorage.busMallItems);
+  console.log('Retrieved items: ', retrievedItems);
   for (var i = 0; i < retrievedItems.length; i++) {
     new CatalogItem(retrievedItems[i].name, retrievedItems[i].views, retrievedItems[i].votes);
   }
@@ -101,6 +102,7 @@ function handleItemClick (e) {
   if (totalVotes === 25) {
     disableAndHideImages();
     localStorage.setItem('busMallItems', JSON.stringify(allItems));
+    console.log('allItems saved to local stroage: ', allItems);
     return showChart();
   }
   displayItems();
